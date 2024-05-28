@@ -1,4 +1,4 @@
-package co.za.faboda.ezagastumanbackend.exceptions;
+package com.mikechiloane.bookstore.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

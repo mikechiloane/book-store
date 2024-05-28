@@ -1,14 +1,15 @@
-package co.za.faboda.ezagastumanbackend.util;
+package com.mikechiloane.bookstore.util;
 
 
-
-import co.za.faboda.ezagastumanbackend.model.User;
-import io.jsonwebtoken.*;
+import com.mikechiloane.bookstore.model.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.dialect.MySQLDialect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
@@ -25,8 +26,8 @@ public class JWTUtil   {
     private String secret_key;
 
     public String createToken(User user) {
-        assert user.getEmail() != null && !user.getEmail().isEmpty() : "User email must not be null or empty";
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
+        assert user.getUsername() != null && !user.getUsername().isEmpty() : "User email must not be null or empty";
+        Claims claims = Jwts.claims().setSubject(user.getUsername());
 
         Date tokenCreateTime = new Date();
         long jwtExpirationInMs = 604800000L;
@@ -35,35 +36,19 @@ public class JWTUtil   {
                 .setClaims(claims)
                 .setIssuedAt(tokenCreateTime)
                 .setExpiration(tokenValidity)
-                .setSubject(user.getEmail())
+                .setSubject(user.getUsername())
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public boolean validateToken(String token, User user) {
-        try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(getSignInKey())
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            return claims.getSubject().equals(user.getEmail()) && validateClaims(claims);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-
-
     public Claims resolveClaims(HttpServletRequest req) {
         try {
             String token = resolveToken(req);
+            token = token.replace("Be arer ", "");
             if (token != null) {
-                return  Jwts.parserBuilder()
+                return  Jwts.parser()
                         .setSigningKey(getSignInKey())
-                        .build()
-                        .parseClaimsJws(token.substring(7))
+                        .parseClaimsJws(token)
                         .getBody();
             }
             return null;

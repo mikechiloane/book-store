@@ -1,4 +1,4 @@
-package co.za.faboda.ezagastumanbackend.config;
+package com.mikechiloane.bookstore.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

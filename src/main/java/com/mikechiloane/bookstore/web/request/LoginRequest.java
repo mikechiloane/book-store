@@ -1,2 +1,12 @@
-package com.mikechiloane.bookstore.web.request;public class LoginRequest {
+package com.mikechiloane.bookstore.web.request;
+
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
+public class LoginRequest {
+        @NonNull
+        private String username;
+        @NonNull
+        private String password;
 }

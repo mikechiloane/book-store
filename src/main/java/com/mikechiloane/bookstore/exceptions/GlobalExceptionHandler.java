@@ -1,8 +1,5 @@
-package co.za.faboda.ezagastumanbackend.exceptions;
+package com.mikechiloane.bookstore.exceptions;
 
-
-
-import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -41,10 +38,5 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(co.za.faboda.ezagastumanbackend.exceptions.ValidationException.class)
-    public ResponseEntity<ApiResponse> handleValidationException (co.za.faboda.ezagastumanbackend.exceptions.ValidationException ex) {
-        ApiResponse apiResponse = new ApiResponse(HttpStatus.BAD_REQUEST, "Validation failed", ex.getMessage());
-        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
-    }
 
 }

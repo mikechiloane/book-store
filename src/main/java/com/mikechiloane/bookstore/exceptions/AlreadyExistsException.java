@@ -1,4 +1,4 @@
-package co.za.faboda.ezagastumanbackend.exceptions;
+package com.mikechiloane.bookstore.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

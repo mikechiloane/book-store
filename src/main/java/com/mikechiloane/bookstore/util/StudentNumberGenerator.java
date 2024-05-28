@@ -1,4 +1,4 @@
-package co.za.faboda.ezagastumanbackend.util;
+package com.mikechiloane.bookstore.util;
 
 import java.util.Random;
 

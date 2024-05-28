@@ -1,6 +1,6 @@
-package co.za.faboda.ezagastumanbackend.config;
+package com.mikechiloane.bookstore.config;
 
-import co.za.faboda.ezagastumanbackend.util.JWTUtil;
+import com.mikechiloane.bookstore.util.JWTUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,32 +27,32 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-
             String accessToken = jwtUtil.resolveToken(request);
 
             if (accessToken == null || !accessToken.startsWith("Bearer ")) {
-                log.error("No token found in request");
                 filterChain.doFilter(request, response);
                 return;
             }
 
             Claims claims = jwtUtil.resolveClaims(request);
 
-            if (!jwtUtil.validateClaims(claims)) {
+            if (claims == null || !jwtUtil.validateClaims(claims)) {
                 log.error("Invalid token claims");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token claims");
                 return;
             }
 
-            String email = claims.getSubject();
-            Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(email, null, new ArrayList<>());
+            String username = claims.getSubject();
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } catch (Exception e) {
             log.error("Error authenticating user: {}", e.getMessage());
-            throw new ServletException("Error authenticating user", e);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error authenticating user");
+            return;
         }
+
         filterChain.doFilter(request, response);
     }
+
 }
