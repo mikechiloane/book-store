@@ -85,7 +85,7 @@ public class BookServiceAspects {
         if(!userUtil.userExists(userBookRequest.getUsername())){
             throw new NotFoundException("User does not exist");
         }
-        if(bookUtil.bookExists(userBookRequest.getBookId())){
+        if(!bookUtil.bookExists(userBookRequest.getBookId())){
             throw new NotFoundException("Book does not exist");
         }
         if(!bookUtil.bookIsAvailable(userBookRequest.getBookId())){

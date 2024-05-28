@@ -44,7 +44,7 @@ public class JWTUtil   {
     public Claims resolveClaims(HttpServletRequest req) {
         try {
             String token = resolveToken(req);
-            token = token.replace("Be arer ", "");
+            token = token.replace("Bearer ", "");
             if (token != null) {
                 return  Jwts.parser()
                         .setSigningKey(getSignInKey())
